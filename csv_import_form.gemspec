@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = CsvImportForm::VERSION
   s.authors     = ["Toshihisa KATO"]
   s.email       = ["toshihk@gmail.com"]
-  s.homepage    = "TODO"
+  s.homepage    = ""
   s.summary     = "Utility model for import csv file to activerecord based model."
-  s.description = "TODO: Description of CsvImportForm."
+  s.description = "CSVファイルからActiveRecordへデータをインポートするためのユーティリティモデル"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]

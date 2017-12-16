@@ -1,3 +1,4 @@
+require 'csv_import_form/form_model'
+require 'csv_import_form/row_model'
 module CsvImportForm
-  # Your code goes here...
 end
