@@ -1,5 +1,5 @@
 # CsvImportForm
-Short description and motivation.
+Utility model for import csv file to activerecord based model.
 
 ## Usage
 How to use my plugin.
@@ -8,7 +8,7 @@ How to use my plugin.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'csv_import_form'
+gem 'csv_import_form', github: 'toshih-k/rails_csv_import_form'
 ```
 
 And then execute:
