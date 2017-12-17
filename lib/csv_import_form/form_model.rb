@@ -72,7 +72,12 @@ module CsvImportForm
     end
 
     def save_data(mapping_name, records, login_user_instance)
+      skip_update_id = nil
       id_list = []
+      if !options[:skip_update_id_proc].nil?
+        skip_update_id = options[:skip_update_id_proc].call(login_user_instance)
+        id_list << skip_update_id
+      end
       options = self.class.model_mappings[mapping_name]
       model_class = mapping_name.to_s.classify.constantize
       records.each do |record|
@@ -84,21 +89,22 @@ module CsvImportForm
         end
         # 権限等このタイミングで更新したくないレコードが存在する場合
         # 更新対象から除外しかつ削除対象にならないようid_listには追加
-        if dbrec.new_record? or options[:skip_update_if].nil? or !options[:skip_update_if].call(dbrec, login_user_instance)
-          dbrec.attributes = get_values(mapping_name, record)
-          unless options[:relay_to].nil?
-            options[:relay_to].each do |relay_model_name|
-              relay_keys = get_keys(relay_model_name, record)
-              if relay_keys.nil?
-                raise RuntimeError.new('関連レコードに対して一意に検索可能なフィールドが設定されていません。')
-              end
-              relay_item = relay_model_name.to_s.classify.constantize.find_by(relay_keys)
-              next if relay_item.nil?
-              dbrec["#{relay_model_name}_id"] = relay_item.id
-            end
-          end
-          dbrec.save!
+        if !dbrec.new_record? and dbrec.id == skip_update_id
+          next
         end
+        dbrec.attributes = get_values(mapping_name, record)
+        unless options[:relay_to].nil?
+          options[:relay_to].each do |relay_model_name|
+            relay_keys = get_keys(relay_model_name, record)
+            if relay_keys.nil?
+              raise RuntimeError.new('関連レコードに対して一意に検索可能なフィールドが設定されていません。')
+            end
+            relay_item = relay_model_name.to_s.classify.constantize.find_by(relay_keys)
+            next if relay_item.nil?
+            dbrec["#{relay_model_name}_id"] = relay_item.id
+          end
+        end
+        dbrec.save!
         id_list << dbrec.id
       end
       if options[:delete]
