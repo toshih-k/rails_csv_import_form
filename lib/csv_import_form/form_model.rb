@@ -21,7 +21,7 @@ module CsvImportForm
       self.model_mappings[name] = options
     end
 
-    def read_from_file(filename, options={encoding: CSV_ENCODING})
+    def read_from_file(filename, options={})
       self.records = []
       CSV.foreach( filename, options).with_index(1) do |line, i|
          next if i==1
