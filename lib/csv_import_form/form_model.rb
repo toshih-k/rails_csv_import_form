@@ -72,13 +72,13 @@ module CsvImportForm
     end
 
     def save_data(mapping_name, records, login_user_instance)
+      options = self.class.model_mappings[mapping_name]
       skip_update_id = nil
       id_list = []
       if !options[:skip_update_id_proc].nil?
         skip_update_id = options[:skip_update_id_proc].call(login_user_instance)
         id_list << skip_update_id
       end
-      options = self.class.model_mappings[mapping_name]
       model_class = mapping_name.to_s.classify.constantize
       records.each do |record|
         keys = get_keys(mapping_name, record)
