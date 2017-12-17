@@ -64,7 +64,8 @@ module CsvImportForm
           k
         end
         if error_keys.length > 0
-          self.errors.add(:base, "データの整合性に問題があります。[#{error_keys.join(',')}]")
+          msg = self.class.model_mappings[mapping_name][:unique_key_error_message]
+          self.errors.add(:base, "#{msg}[#{error_keys.join(',')}]")
         end
       end
       result
