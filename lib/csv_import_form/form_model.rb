@@ -102,7 +102,9 @@ module CsvImportForm
       end
       if options[:delete]
         # 削除対象にしたくないレコードをここでセット
-        id_list << [:skip_delete_id_proc].call(login_user_instance) unless [:skip_delete_id_proc].nil?
+        unless options[:skip_delete_id_proc].nil?
+          id_list << options[:skip_delete_id_proc].call(login_user_instance)
+        end
         model_class.where.not(id: id_list).delete_all
       end
     end
