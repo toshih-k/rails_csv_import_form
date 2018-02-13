@@ -33,6 +33,17 @@ module CsvImportForm
       end
     end
 
+    def read_from_array(array_list)
+      self.records = []
+      array_list.each.with_index(1) do |line, i|
+        next if i==1
+        attributes = self.class.row_model_class.fields.map.with_index do |field_name, i|
+         [field_name, line[i]]
+        end.to_h
+        record = self.class.row_model_class.new(attributes)
+        self.records << record
+    end
+
     def pick_and_aggregate_data(mapping_name, &skip_condition)
       result = self.records
       .reject(&skip_condition)
