@@ -42,6 +42,7 @@ module CsvImportForm
         end.to_h
         record = self.class.row_model_class.new(attributes)
         self.records << record
+      end
     end
 
     def pick_and_aggregate_data(mapping_name, &skip_condition)
