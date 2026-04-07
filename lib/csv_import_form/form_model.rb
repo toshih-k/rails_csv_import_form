@@ -102,8 +102,6 @@ module CsvImportForm
           else
             dbrec = model_class.find_by(keys) || model_class.new(keys)
           end
-          dbrec_hash = dbrec.as_json
-          pp({ keys: keys, record: record, mapping_name: mapping_name, db_rec: dbrec_hash })
           # 権限等このタイミングで更新したくないレコードが存在する場合
           # 更新対象から除外しかつ削除対象にならないようid_listには追加
           if !dbrec.new_record? and dbrec.id == skip_update_id
